@@ -3,7 +3,7 @@ const  User  = require('../models/User');
 module.exports = {
     //create friend
     addFriend(req, res) {
-        const { friendId } = req.body;
+        const friendId  = req.params.friendId;
       
         // First, find the user by their ID (req.params.userId)
         User.findOne({ _id: req.params.userId })
@@ -35,7 +35,7 @@ module.exports = {
         //delete user
         deleteFriend(req, res) {
             const userId = req.params.userId;
-            const { friendId } = req.body;
+            const friendId  = req.params.friendId;
           
             // Find the user by their ID (userId)
             User.findOne({ _id: userId })
@@ -64,6 +64,5 @@ module.exports = {
               });
           },
           
-          
-          
 }
+          

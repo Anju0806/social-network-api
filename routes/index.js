@@ -6,8 +6,8 @@ const friendRoutes = require('./api/friendRoutes');
 
 router.use('/api/users', userRoutes);
 router.use('/api/thoughts', thoughtRoutes);
-router.use('/api/reactions', reactionRoutes);
-router.use('/api/friends', friendRoutes);
+router.use('/api/thoughts', reactionRoutes);
+router.use('/api/users', friendRoutes);
 
 router.use((req, res) => {
   return res.send('Wrong route!');

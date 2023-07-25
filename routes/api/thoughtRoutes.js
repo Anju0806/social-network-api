@@ -11,7 +11,4 @@ router.route('/').get(getThoughts).post(addThought);
 // /api/thoughts/:thoughtId
 router.route('/:thoughtId').get(getThought); 
 
-/* // /api/thoughts/:userId
-router.route('/:userId').get(getThought);  */
-
 module.exports = router;
