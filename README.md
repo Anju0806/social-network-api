@@ -9,14 +9,14 @@ This is the backend API for a social network web application, built using Expres
 
 ## Table of Contents
 
-Installation
-Usage
-API Routes
-Walkthrough Video
-Screenshots
-License
-Contributing
-Questions
+- Installation
+- Usage
+- API Routes
+- Walkthrough Video
+- Screenshots
+- License
+- Contributing
+- Questions
 
 
 
