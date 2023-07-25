@@ -64,7 +64,7 @@ To start the server and sync the Mongoose models to the MongoDB database, run:
 
 ## Walkthrough Video
 
-Link to the Walkthrough Video
+Link to the Walkthrough Video: https://drive.google.com/file/d/1h4IEGlC7XmEx1wLSPQRe74aocaxq-oKP/view
 
 ## License
 
