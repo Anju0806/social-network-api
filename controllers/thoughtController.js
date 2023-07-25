@@ -40,14 +40,14 @@ module.exports = {
             thoughtText: req.body.thoughtText,
             username: req.body.username, // Assuming you have a username field in the request body
           });
-        
+          Thought.create(req.body);
           //Find the user by their ID
           User.findOne({ _id: req.params.userId })
             .then((user) => {
               if (!user) {
                 return res.status(404).json({ message: 'User not found' });
               }
-        
+              
               // Adding the ID of the new thought to the user's thoughts array
               user.thoughts.push(newThought._id);
         
