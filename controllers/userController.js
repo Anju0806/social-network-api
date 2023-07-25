@@ -1,7 +1,5 @@
 const  User  = require('../models/User');
-const {
-  deleteAllThoughtsOfUser,
-} = require('./thoughtController');
+const Thought = require('../models/Thought');
 
 module.exports = {
 
@@ -69,17 +67,27 @@ module.exports = {
       
     //delete user
     deleteUser(req, res) {
-        User.findOneAndDelete({ _id: req.params.userId })
-          .then((user) => {
-            if (!user) {
-              return res.status(404).json({ message: 'User not found' });
-            }
-            deleteAllThoughtsOfUser(user.thoughts);
-            res.json({ message: 'User deleted', user: user });
-          })
-          .catch((err) => {
-            console.error(err);
-            res.status(500).json({ message: 'Error deleting user' });
-          });
-      },      
+      const { userId } = req.params;
+    
+      User.findOneAndDelete({ _id: userId })
+        .then((user) => {
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+          const thoughtIdsToDelete = user.thoughts; 
+          Thought.deleteMany({ _id: { $in: thoughtIdsToDelete } })
+            .then(() => {
+              res.json({ message: 'User and their thoughts have been deleted' });
+            })
+            .catch((err) => {
+              console.error(err);
+              res.status(500).json({ message: 'Error deleting thoughts of the user' });
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).json({ message: 'Error deleting user' });
+        })
+    },
+               
 }

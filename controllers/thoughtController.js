@@ -1,8 +1,5 @@
 const Thought = require('../models/Thought');
-const {
-  updateUser,
-} = require('./userController');
-
+const User = require('../models/User');
 module.exports = {
   //get all thoughts
   getThoughts(req, res) {
@@ -36,39 +33,34 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
 
   },
+
   addThought(req, res) {
-    //craeting a thought
+    // Create the thought first
     Thought.create(req.body)
-      .then((thought) => {
-        // Check if thought is truthy to ensure successful creation
-        if (thought) {
-          //res.json({ message: 'Thought created'});
-         
-        } else {
-          // This block will be executed only in case of unexpected issues
-          res.status(404).json({ message: 'Thought not created' });
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          return res.json({ message: 'Error: Thought not created!' });
         }
-      }).then( updateUser(req, res))
+  
+        // Update the user with the new thought ID
+        return User.findOneAndUpdate(
+          { _id: req.body.userId },
+          { $push: { thoughts: dbThoughtData._id } },
+          { new: true }
+        );
+      })
+      .then((dbUserData) => {
+        if (!dbUserData) {
+          return res.status(404).json({ message: 'Thought created but no user with this id!' });
+        }
+  
+        res.json({ message: 'Thought successfully created!' });
+      })
       .catch((err) => {
         console.error(err);
         res.status(500).json({ message: 'Error adding Thought into user' });
       });
-
   },
-  //delete thought
-  deleteAllThoughtsOfUser(thoughtIdsToDelete) {
-
-    // deleteMany method delete all thoughts with the IDs
-    if (thoughtIdsToDelete) {
-      Thought.deleteMany({ _id: { $in: thoughtIdsToDelete } })
-        .then(() => {
-          res.json({ message: 'All thoughts of the user have been deleted' });
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).json({ message: 'Error deleting thoughts of the user' });
-        });
-    }
-    else return;
-  }
+    
+  
 }
