@@ -1,4 +1,7 @@
 const  User  = require('../models/User');
+const {
+  deleteAllThoughtsOfUser,
+} = require('./thoughtController');
 
 module.exports = {
 
@@ -51,7 +54,7 @@ module.exports = {
       
     //update user
     updateUser(req, res) {
-        User.findOneAndUpdate({ _id: req.params.userId }, req.body, { new: true })
+        User.findOneAndUpdate({ _id: req.body.userId }, req.body, { new: true })
           .then((user) => {
             if (!user) {
               return res.status(404).json({ message: 'User not found' });
@@ -71,6 +74,7 @@ module.exports = {
             if (!user) {
               return res.status(404).json({ message: 'User not found' });
             }
+            deleteAllThoughtsOfUser(user.thoughts);
             res.json({ message: 'User deleted', user: user });
           })
           .catch((err) => {
